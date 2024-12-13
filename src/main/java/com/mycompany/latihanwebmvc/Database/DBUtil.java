@@ -8,6 +8,8 @@ package com.mycompany.latihanwebmvc.Database;
  *
  * @author helmy
  */
+import com.mycompany.latihanwebmvc.Database.DBUtil;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

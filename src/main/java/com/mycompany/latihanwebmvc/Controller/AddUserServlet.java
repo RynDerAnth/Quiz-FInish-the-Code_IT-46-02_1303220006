@@ -31,11 +31,11 @@ public class AddUserServlet extends HttpServlet {
 
         User user = new User(username, password, fullName);
         try (Connection conn = DBUtil.getConnection()) {
-            String query = "INSERT INTO users (username, password, full_name) VALUES ('" + username + "', '" + password + "', '" + fullName + "')";
+            String query = "INSERT INTO users (username, password, full_name) VALUES (?, ?, ?)";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, user.getUsername());
-                stmt.setString(1, user.getPassword());
-                stmt.setString(1, user.getFullName());
+                stmt.setString(2, user.getPassword());
+                stmt.setString(3, user.getFullName());
                 stmt.executeUpdate();
             }
             response.sendRedirect("UserList.jsp"); // Redirect ke halaman list setelah berhasil

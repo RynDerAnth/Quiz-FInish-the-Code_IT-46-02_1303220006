@@ -27,7 +27,7 @@ public class DeleteUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId = Integer.parseInt(request.getParameter("id"));
         try (Connection conn = DBUtil.getConnection()) {
-            String query = "DELETE FROM users WHERE id = '" + userId + "')";
+            String query = "DELETE FROM users WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setInt(1, userId);
                 stmt.executeUpdate();

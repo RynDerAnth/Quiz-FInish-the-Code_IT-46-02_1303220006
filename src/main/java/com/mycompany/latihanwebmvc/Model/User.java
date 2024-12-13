@@ -8,6 +8,9 @@ package com.mycompany.latihanwebmvc.Model;
  *
  * @author helmy
  */
+import com.mycompany.latihanwebmvc.Database.DBUtil;
+import java.sql.*;
+
 public class User {
 
     private int id;
@@ -68,6 +71,25 @@ public class User {
 
     //Validasi login (contoh saja kita kasih hardcode untuk username "admin" dan password "admin123")
     public boolean isValidUser() {
-        return "admin".equals(username) && "admin123".equals(password);
+        boolean result = false;
+        String query = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
+        
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            
+            ps.setString(1, username);
+            ps.setString(2, password);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    result = (count > 0);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return result;
     }
 }

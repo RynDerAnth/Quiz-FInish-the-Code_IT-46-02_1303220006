@@ -24,12 +24,12 @@ import java.util.logging.Logger;
 @WebServlet("/editUser")
 public class EditUserServlet extends HttpServlet {
 
-    @Override
+     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId = Integer.parseInt(request.getParameter("id"));
         User user = null;
         try (Connection conn = DBUtil.getConnection()) {
-            String query = "SELECT * FROM users WHERE id = '" + userId + "')";
+            String query = "SELECT * FROM users WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setInt(1, userId);
                 ResultSet rs = stmt.executeQuery();
@@ -59,10 +59,14 @@ public class EditUserServlet extends HttpServlet {
 
         User user = new User(userId, username, password, fullName);
         try (Connection conn = DBUtil.getConnection()) {
-            String query = "UPDATE users SET username = '" + username + "', password = '" + password + "', full_name = '" + fullName + "' WHERE id = '" + userId + "'";
+            String query = "UPDATE users SET username = ?, password = ?, full_name = ? WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, user.getUsername());
+                stmt.setString(2, user.getPassword());
+                stmt.setString(3, user.getFullName());
+                stmt.setInt(4, user.getId());
                 stmt.executeUpdate();
+                
             }
             response.sendRedirect("UserList.jsp");
         } catch (SQLException e) {
