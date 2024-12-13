@@ -16,22 +16,8 @@
     <title>Welcome Page</title>
 </head>
 <body>
-    <%
-        try {
-            Connection conn = DBUtil.getConnection();
-            String query = "SELECT * FROM users";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-    %>
-    <h2>Selamat datang, <%= rs.getString("full_name") %>! anda berhasil Login!</h2>  <!-- Menampilkan nama pengguna yang login -->
-    <%
-            }
-            conn.close();
-        } catch (Exception e) {
-            out.println("<tr><td colspan='3'>Error: " + e.getMessage() + "</td></tr>");
-        }
-    %>
+    <h2>Selamat datang, ${user.username}! anda berhasil Login!</h2>  <!-- Menampilkan nama pengguna yang login -->
+ 
     <!-- Tombol untuk liah list user -->
     <form action="userList" method="get">
         <button type="submit">List User</button>
